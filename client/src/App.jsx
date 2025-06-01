@@ -4,7 +4,7 @@ import { FaTrash, FaSpinner, FaFileCsv, FaFileImport, FaPlus } from 'react-icons
 
 const App = () => {
   const [formData, setFormData] = useState([
-    { email: '', name: '', pan: '' }
+    { email: '', name: '', pan: '', pan1: '' }
   ]);
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
@@ -19,7 +19,7 @@ const App = () => {
   };
 
   const addRow = () => {
-    setFormData([...formData, { email: '', name: '', pan: '' }]);
+    setFormData([...formData, { email: '', name: '', pan: '', pan1: '' }]);
   };
 
   const removeRow = (index) => {
@@ -35,7 +35,7 @@ const App = () => {
     try {
       // Validate all entries
       const invalidEntries = formData.filter(entry => 
-        !entry.email || !entry.name || !entry.pan
+        !entry.email || !entry.name || (!entry.pan && !entry.pan1)
       );
       
       if (invalidEntries.length > 0) {
@@ -49,7 +49,7 @@ const App = () => {
       
       for (const entry of formData) {
         try {
-          setMessage(`Sending email to ${entry.email} for PAN: ${entry.pan}...`);
+          setMessage(`Sending email to ${entry.email} for PAN: ${entry.pan || 'N/A'}, PAN1: ${entry.pan1 || 'N/A'}...`);
           
           const response = await fetch('http://localhost:5000/api/email/send-pdf', {
             method: 'POST',
@@ -59,7 +59,8 @@ const App = () => {
             body: JSON.stringify({
               email: entry.email.trim(),
               name: entry.name.trim(),
-              panNo: entry.pan.trim()
+              panNo: entry.pan.trim(),
+              pan1No: entry.pan1 ? entry.pan1.trim() : ''
             })
           });
           
@@ -102,7 +103,7 @@ const App = () => {
       if (failures > 0) {
         const failedEntries = results.filter(r => r.status !== 'Sent');
         const failureDetails = failedEntries.map(entry => 
-          `- ${entry.email} (PAN: ${entry.pan}): ${entry.message}`
+          `- ${entry.email} (PAN: ${entry.pan || 'N/A'}, PAN1: ${entry.pan1 || 'N/A'}): ${entry.message}`
         ).join('\n');
         
         setMessage(prev => `${prev}\n\nFailure details:\n${failureDetails}`);
@@ -116,10 +117,10 @@ const App = () => {
   
   // Export table data to CSV
   const exportToCSV = () => {
-    const headers = ['Email', 'Name', 'PAN'];
+    const headers = ['Email', 'Name', 'PAN', 'PAN1'];
     const csvRows = [
       headers.join(','),
-      ...formData.map(row => [row.email, row.name, row.pan].join(','))
+      ...formData.map(row => [row.email, row.name, row.pan, row.pan1].join(','))
     ];
     
     const csvString = csvRows.join('\n');
@@ -152,11 +153,12 @@ const App = () => {
         return {
           email: (values[0] || '').trim(),
           name: (values[1] || '').trim(),
-          pan: (values[2] || '').trim()
+          pan: (values[2] || '').trim(),
+          pan1: (values[3] || '').trim()
         };
-      }).filter(row => row.email || row.name || row.pan); // Filter out empty rows
+      }).filter(row => row.email || row.name || row.pan || row.pan1); // Filter out empty rows
       
-      setFormData(newData.length ? newData : [{ email: '', name: '', pan: '' }]);
+      setFormData(newData.length ? newData : [{ email: '', name: '', pan: '', pan1: '' }]);
     };
     reader.readAsText(file);
   };
@@ -188,6 +190,7 @@ const App = () => {
               <th>Email</th>
               <th>Name</th>
               <th>PAN</th>
+              <th>PAN1</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -216,6 +219,14 @@ const App = () => {
                     value={row.pan}
                     onChange={(e) => handleInputChange(index, 'pan', e.target.value)}
                     placeholder="PAN Number"
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    value={row.pan1}
+                    onChange={(e) => handleInputChange(index, 'pan1', e.target.value)}
+                    placeholder="PAN1 Number"
                   />
                 </td>
                 <td>
