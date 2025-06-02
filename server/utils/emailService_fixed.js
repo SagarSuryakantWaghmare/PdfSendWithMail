@@ -33,8 +33,8 @@ const sendPdfByPan = async (emailId, name, panNo, pan1No, res) => {
     if (fs.existsSync(path.join(pdfsDir, `${panNo}.pdf`))) {
       pdfFileName = `${panNo}.pdf`;
       pdfPath = path.join(pdfsDir, pdfFileName);
-    } else {
-      // Strategy 2: The PAN is actually a filename (with or without extension)
+    }   // Strategy 2: The PAN is actually a filename (with or without extension)
+    else {
       try {
         const files = fs.readdirSync(pdfsDir);
         console.log("Available PDF files in pdfs folder:", files);
@@ -106,8 +106,8 @@ const sendPdfByPan = async (emailId, name, panNo, pan1No, res) => {
     if (fs.existsSync(path.join(pdfs1Dir, `${pan1No}.pdf`))) {
       pdf1FileName = `${pan1No}.pdf`;
       pdf1Path = path.join(pdfs1Dir, pdf1FileName);
-    } else {
-      // Strategy 2: The PAN1 is actually a filename (with or without extension)
+    }   // Strategy 2: The PAN1 is actually a filename (with or without extension)
+    else {
       try {
         const files = fs.readdirSync(pdfs1Dir);
         console.log("Available PDF files in pdfs1 folder:", files);
@@ -205,49 +205,6 @@ const sendPdfByPan = async (emailId, name, panNo, pan1No, res) => {
   });
 };
 
-// Function to send email with pre-existing PDF attachment
-const sendPdfEmail = async (from, to, subject, text, pdfPath, originalName) => {
-  // Create transporter for email
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: process.env.EMAIL_ID,
-      pass: process.env.EMAIL_PASSWORD,
-    },
-    tls: {
-      rejectUnauthorized: false,
-    },
-    connectionTimeout: 10000,
-  });
-
-  // Create mail options object
-  const mailOptions = {
-    from: from,
-    to: to,
-    subject: subject,
-    text: text,
-    attachments: [
-      {
-        filename: originalName,
-        path: pdfPath
-      }
-    ]
-  };
-
-  // Return a promise for the mail sending
-  return new Promise((resolve, reject) => {
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        console.log("Email error:", error);
-        reject(error);
-      } else {
-        console.log("Email sent:", info.response);
-        resolve(info);
-      }
-    });
-  });
-};
-
 // Simple mail sending without attachments (as per your example)
 const sendMail = async (emailId, mailSubject, mailText, res) => {
   // Create transporter for each request
@@ -287,6 +244,5 @@ const sendMail = async (emailId, mailSubject, mailText, res) => {
 
 module.exports = {
   sendPdfByPan,
-  sendPdfEmail,
   sendMail
 };

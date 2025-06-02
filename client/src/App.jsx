@@ -167,8 +167,8 @@ const App = () => {
     <div className="app-container">
       <h1 className="heading">PDF Email Sender</h1>
       <div className="instructions">
-        <p>Enter recipient details below. PDF files will be retrieved based on PAN number.</p>
-        <p>Make sure PDF files named as [PAN].pdf exist in the server's pdfs folder.</p>
+        <p>Enter recipient details below. PDF files will be retrieved based on PAN and PAN1 numbers.</p>
+        <p>Make sure PDF files named as [PAN].pdf exist in the server's pdfs folder and [PAN1].pdf exist in the pdfs1 folder.</p>
       </div>
       
       <div className="actions">

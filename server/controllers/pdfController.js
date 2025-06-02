@@ -77,11 +77,11 @@ exports.sendPdfEmail = async (req, res) => {
     
     // Send emails to all recipients
     for (const recipient of recipients) {
-      try {
-        const mailText = `
+      try {        const mailText = `
 Hello ${recipient.name || recipient.email},
 Please find the attached PDF document.
 PAN: ${recipient.pan || 'N/A'}
+PAN1: ${recipient.pan1 || 'N/A'}
 Best regards,
 ${req.user.name}
         `;
@@ -105,12 +105,12 @@ ${req.user.name}
         });
       }
     }
-    
-    // Update PDF document with recipients
+      // Update PDF document with recipients
     const recipientUpdates = successRecipients.map(recipient => ({
       email: recipient.email,
       name: recipient.name || '',
       pan: recipient.pan || '',
+      pan1: recipient.pan1 || '',
       status: 'sent',
       sentAt: Date.now()
     }));
