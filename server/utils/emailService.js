@@ -166,21 +166,22 @@ const sendPdfByPan = async (emailId, name, panNo, pan1No, res) => {
   if (attachments.length === 2 && attachments[0].filename === attachments[1].filename) {
     attachments[0].filename = `PAN_${attachments[0].filename}`;
     attachments[1].filename = `PAN1_${attachments[1].filename}`;
-  }
+  }  // Mail subject and text
+  const mailSubject = `Your Form 16 for FY 2024-25`;
+  let mailText = `Dear ${name},
 
-  // Mail subject and text
-  const mailSubject = `PDF Document for ${name}`;
-  let mailText = `Dear ${name},\n\nPlease find attached your PDF document(s)`;
-  
-  if (panNo) {
-    mailText += ` related to PAN: ${panNo}`;
-  }
-  
-  if (pan1No) {
-    mailText += `${panNo ? ' and ' : ' related to '}PAN1: ${pan1No}`;
-  }
-  
-  mailText += '.\n\nRegards,\nPDF Email Service';
+Kindly download the attached Form 16 for the Financial Year 2024-25.
+
+You are requested to file your Income Tax Return (ITR) within the due date, i.e., 31st July 2025, as per the Income Tax Department's guidelines.
+
+Please ensure timely submission to avoid any penalties. For any assistance or clarification, feel free to get in touch.
+
+Thanking you,
+
+Regards,
+Mr. Nitin Ghodke (Mobile-9028685994)
+Accounts dept.
+Deogiri Institute of Engineering and Management Studies, Chhatrapati Sambhajinagar`;
 
   // Create mail options object
   const mailOptions = {
@@ -218,14 +219,28 @@ const sendPdfEmail = async (from, to, subject, text, pdfPath, originalName) => {
       rejectUnauthorized: false,
     },
     connectionTimeout: 10000,
-  });
+  });  // Create professional email text
+  const professionalText = `Dear Sir/Madam,
+
+Kindly download the attached Form 16 for the Financial Year 2024-25.
+
+You are requested to file your Income Tax Return (ITR) within the due date, i.e., 31st July 2025, as per the Income Tax Department's guidelines.
+
+Please ensure timely submission to avoid any penalties. For any assistance or clarification, feel free to get in touch.
+
+Thanking you,
+
+Regards,
+Mr. Nitin Ghodke (Mobile-9028685994)
+Accounts dept.
+Deogiri Institute of Engineering and Management Studies, Chhatrapati Sambhajinagar`;
 
   // Create mail options object
   const mailOptions = {
     from: from,
     to: to,
-    subject: subject,
-    text: text,
+    subject: "Your Form 16 for FY 2024-25",
+    text: professionalText,
     attachments: [
       {
         filename: originalName,

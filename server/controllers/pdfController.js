@@ -77,20 +77,26 @@ exports.sendPdfEmail = async (req, res) => {
     
     // Send emails to all recipients
     for (const recipient of recipients) {
-      try {        const mailText = `
-Hello ${recipient.name || recipient.email},
-Please find the attached PDF document.
-PAN: ${recipient.pan || 'N/A'}
-PAN1: ${recipient.pan1 || 'N/A'}
-Best regards,
-${req.user.name}
+      try {        const mailText = `Dear ${recipient.name || 'Sir/Madam'},
+
+Kindly download the attached Form 16 for the Financial Year 2024-25.
+
+You are requested to file your Income Tax Return (ITR) within the due date, i.e., 31st July 2025, as per the Income Tax Department's guidelines.
+
+Please ensure timely submission to avoid any penalties. For any assistance or clarification, feel free to get in touch.
+
+Thanking you,
+
+Regards,
+Mr. Nitin Ghodke (Mobile-9028685994)
+Accounts dept.
+Deogiri Institute of Engineering and Management Studies, Chhatrapati Sambhajinagar
         `;
-        
-        // Using our new email service
+          // Using our new email service
         await emailService.sendPdfEmail(
           process.env.EMAIL_ID,
           recipient.email,
-          'PDF Document',
+          'Your Form 16 for FY 2024-25',
           mailText,
           filePath,
           pdf.originalName

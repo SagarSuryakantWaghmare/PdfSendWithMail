@@ -165,9 +165,9 @@ const App = () => {
 
   return (
     <div className="app-container">
-      <h1 className="heading">PDF Email Sender</h1>
+      <h1 className="heading">Form 16 Email Sender</h1>
       <div className="instructions">
-        <p>Enter recipient details below. PDF files will be retrieved based on PAN and PAN1 numbers.</p>
+        <p>Enter recipient details below. Form 16 PDF files will be retrieved based on PAN and PAN1 numbers.</p>
         <p>Make sure PDF files named as [PAN].pdf exist in the server's pdfs folder and [PAN1].pdf exist in the pdfs1 folder.</p>
       </div>
       
@@ -247,7 +247,7 @@ const App = () => {
           disabled={loading}
           className="send-button"
         >
-          {loading ? 'Sending...' : 'Send PDFs'}
+          {loading ? 'Sending...' : 'Send Form 16 PDFs'}
         </button>
       </div>
       
